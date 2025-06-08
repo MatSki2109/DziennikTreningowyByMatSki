@@ -1,0 +1,25 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+workout_plan_index:
+    path: /plans
+    controller: App\Controller\WorkoutPlanController::index
+
+workout_index:
+    path: /workouts
+    controller: App\Controller\WorkoutController::index
+
+workout_add:
+    path: /workouts/add
+    controller: App\Controller\WorkoutController::add
+
+exercise_index:
+    path: /exercises
+    controller: App\Controller\ExerciseController::index
+
+exercise_add:
+    path: /exercises/add
+    controller: App\Controller\ExerciseController::add

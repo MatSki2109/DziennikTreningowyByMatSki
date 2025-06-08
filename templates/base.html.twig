@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dziennik Treningowy by MatSki{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #646761;
+            color: #070707;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        .flash-message {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+        }
+        .flash-message.success {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        .flash-message.error {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        /* Dodatkowe style dla przycisków */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .btn-primary {
+            background-color: #4e7037;
+            color: #090909;
+        }
+        .btn-primary:hover {
+            background-color: #3d7815;
+        }
+        .btn-secondary {
+            background-color: #6b7280;
+            color: #ffffff;
+        }
+        .btn-secondary:hover {
+            background-color: #4b5563;
+        }
+        .btn-danger {
+            background-color: #ef4444;
+            color: #ffffff;
+        }
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+        /* Style dla formularzy zagnieżdżonych (CollectionType) */
+        .form-group label {
+            margin-bottom: 0.5rem;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            width: 100%;
+        }
+        .form-group .text-red-500 {
+            font-size: 0.875rem;
+        }
+    </style>
+    {% block stylesheets %}{% endblock %}
+    {% block javascripts %}{% endblock %}
+</head>
+<body>
+<nav class="bg-gray-800 p-4 shadow-md" style="background-color: #37492b">
+    <div class="container flex justify-between items-center" >
+        <a href="{{ path('app_workout_index') }}" class="text-black text-3xl font-bold">Dziennik Treningowy by MatSki</a>
+        <div>
+            <a href="{{ path('app_exercise_index') }}" class="text-black hover:text-white px-3 py-2 rounded-md text-xl font-bold">Atlas Ćwiczeń</a>
+            <a href="{{ path('app_workout_index') }}" class="text-black hover:text-white px-3 py-2 rounded-md text-xl font-bold">Moje Treningi</a>
+            {# Tutaj dodasz linki do historii sesji, logowania itp. #}
+            {# <a href="#" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Historia Sesji</a> #}
+            {# <a href="#" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Logowanie</a> #}
+        </div>
+    </div>
+</nav>
+
+<main class="container my-8">
+    {% for message in app.flashes('success') %}
+        <div class="flash-message success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="flash-message error">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('info') %} {# Dodany flash info #}
+        <div class="flash-message" style="background-color: #bfdbfe; color: #1e40af;">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% block body %}{% endblock %}
+</main>
+</body>
+</html>

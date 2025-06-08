@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ workout.name }} - Szczegóły treningu{% endblock %}
+
+{% block body %}
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">{{ workout.name }}</h1>
+
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold text-gray-700 mb-2">Opis:</h2>
+            <p class="text-gray-600 leading-relaxed">{{ workout.description|default('Brak opisu')|nl2br }}</p>
+        </div>
+
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Ćwiczenia w tym planie:</h2>
+
+        {% if workout.workoutExercises|length > 0 %}
+            <div class="space-y-4">
+                {% for workoutExercise in workout.workoutExercises|sort((a, b) => (a.orderInWorkout ?? 9999) <=> (b.orderInWorkout ?? 9999)) %}
+                    <div class="p-4 border border-gray-200 rounded-lg shadow-sm bg-gray-50">
+                        <h3 class="text-lg font-semibold text-blue-700">{{ workoutExercise.exercise.name }}</h3>
+                        <p class="text-gray-600">
+                            <span class="font-medium">Serie:</span> {{ workoutExercise.sets|default('N/A') }} |
+                            <span class="font-medium">Powtórzenia:</span> {{ workoutExercise.reps|default('N/A') }}
+                        </p>
+                        {% if workoutExercise.notes %}
+                            <p class="text-gray-600 mt-2 text-sm">
+                                <span class="font-medium">Uwagi:</span> {{ workoutExercise.notes }}
+                            </p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-600">Ten plan treningowy nie ma jeszcze żadnych ćwiczeń. <a href="{{ path('app_workout_edit', {'id': workout.id}) }}" class="text-blue-600 hover:underline">Dodaj je teraz!</a></p>
+        {% endif %}
+
+        <div class="mt-8 flex space-x-4">
+            <a href="{{ path('app_workout_edit', {'id': workout.id}) }}" class="btn btn-primary">Edytuj plan treningowy</a>
+            <a href="{{ path('app_workout_index') }}" class="btn btn-secondary">Wróć do listy planów</a>
+        </div>
+
+        <div class="mt-4">
+            <form method="post" action="{{ path('app_workout_delete', {'id': workout.id}) }}" onsubmit="return confirm('Czy na pewno chcesz usunąć ten plan treningowy? Spowoduje to również usunięcie wszystkich przypisanych do niego ćwiczeń.');">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ workout.id) }}">
+                <button type="submit" class="btn btn-danger">Usuń plan treningowy</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
